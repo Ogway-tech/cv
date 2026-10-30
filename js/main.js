@@ -113,6 +113,19 @@
   onScroll();
   window.addEventListener("scroll", onScroll, { passive: true });
 
+  /* ---------- Progress scroll ---------- */
+  const progressBar = document.querySelector(".scroll-progress");
+  const updateProgress = () => {
+    if (!progressBar) return;
+    const doc = document.documentElement;
+    const max = doc.scrollHeight - window.innerHeight;
+    const ratio = max > 0 ? Math.min(window.scrollY / max, 1) : 0;
+    doc.style.setProperty("--progress", `${(ratio * 100).toFixed(2)}%`);
+  };
+  updateProgress();
+  window.addEventListener("scroll", updateProgress, { passive: true });
+  window.addEventListener("resize", updateProgress);
+
   /* ---------- Animasi ketik untuk role (halus, opsional) ---------- */
   const role = document.querySelector(".role");
   if (role && !reduceMotion) {
