@@ -263,6 +263,10 @@ main {
   letter-spacing: -0.045em;
 }
 
+.name-last { display: block; }
+
+.print-only { display: none; }
+
 .role {
   font-size: 15px;
   color: var(--ink-soft);
@@ -592,34 +596,173 @@ main {
 }
 
 /* ---------- Print / PDF (A4) ---------- */
-@page { size: A4; margin: 12mm 12mm; }
+@page { size: A4; margin: 13mm 14mm 12mm; }
 
 @media print {
-  html { scroll-behavior: auto; }
-  body { background: #fff; color: #000; padding: 0; font-size: 11pt; }
-  .topbar, .footer, .hero-cta, .skip-link, .card-mono,
-  .ticker, .scroll-progress { display: none !important; }
-  main, .hero, .footer { max-width: none; }
-  .hero { display: block; padding: 0; }
-  .card {
-    box-shadow: none;
-    border-color: #ccc;
-    border-radius: 8px;
-    padding: 14px 16px;
-    break-inside: avoid;
-    page-break-inside: avoid;
+  html { scroll-behavior: auto; font-size: 10.5pt; }
+
+  body {
+    background: #fff !important;
+    color: #000;
+    padding: 0;
+    font-size: 10.5pt;
+    line-height: 1.45;
   }
-  .card-hero { padding: 0 0 8px; border: 0; }
-  .card-hero h1 { font-size: 30pt; }
-  .section { padding-top: 18pt; }
-  .section-head { margin-bottom: 10pt; padding-bottom: 6pt; }
-  .section-num, .dot { color: #000; }
-  .eyebrow { color: #444; }
-  .chips li { border-color: #ddd; }
-  .timeline { padding-left: 0; }
+
+  /* UI & elemen yang tidak perlu di kertas */
+  .topbar, .footer, .skip-link, .ticker, .scroll-progress,
+  .hero-cta, .icon-btn, .card-stats, #contact,
+  .photo-label, .eyebrow, .section-num,
+  .card-contact .card-title { display: none !important; }
+
+  main { max-width: none; padding: 0; }
+
+  /* semua kartu jadi blok polos, hemat tinta */
+  .card, .card-cta {
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    border-radius: 0;
+    padding: 0;
+  }
+
+  /* ---------- Header CV ---------- */
+  .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 26mm;
+    grid-template-rows: auto auto;
+    column-gap: 8mm;
+    row-gap: 3mm;
+    margin: 0;
+    padding: 0 0 4mm;
+    border-bottom: 0.8pt solid #111;
+    break-after: avoid;
+  }
+
+  .card-hero {
+    grid-column: 1;
+    grid-row: 1;
+    display: block;
+    padding: 0;
+  }
+
+  .card-hero h1 {
+    font-size: 21pt;
+    line-height: 1.06;
+    letter-spacing: -0.02em;
+  }
+
+  .name-last { display: inline; }
+
+  .card-photo {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    align-self: start;
+    width: 26mm;
+    height: 32mm;
+    min-height: 0;
+    border: 0.5pt solid #c4c4c4;
+    border-radius: 1.5mm;
+  }
+
+  .card-photo .photo { object-position: center 20%; }
+
+  .card-contact {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  .print-only { display: flex !important; }
+
+  .role { margin-top: 2.5mm; font-size: 10pt; color: #222; }
+  .role strong { color: #000; }
+
+  .lede {
+    max-width: none;
+    margin-top: 2mm;
+    font-size: 9.5pt;
+    color: #333;
+  }
+
+  .contact-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1mm 6mm;
+  }
+
+  .contact-list li { gap: 1.5mm; font-size: 9pt; }
+  .contact-list svg { width: 3.4mm; height: 3.4mm; color: #000; }
+  .contact-list a, .contact-list span { color: #000; }
+
+  /* ---------- Section ---------- */
+  .section { padding-top: 5mm; }
+
+  .section-head {
+    padding-bottom: 1.2mm;
+    margin-bottom: 3mm;
+    border-bottom: 0.5pt solid #8c8c8c;
+    break-after: avoid;
+  }
+
+  .section-head h2 { font-size: 11.5pt; letter-spacing: 0.01em; }
+
+  .card-wide { break-inside: avoid; }
+  .card-wide p { max-width: none; font-size: 9.8pt; color: #222; }
+
+  /* ---------- Timeline ---------- */
+  .timeline { padding-left: 0; gap: 4mm; }
   .timeline::before, .timeline > li::before { display: none; }
+  .timeline > li { break-inside: avoid; }
+
+  .tl-head h3 { font-size: 10.5pt; }
+
+  .badge {
+    padding: 0;
+    border: 0;
+    font-size: 9pt;
+    color: #000;
+  }
+
+  .tl-sub { margin-top: 0.8mm; font-size: 9.5pt; color: #222; }
+  .tl-meta { margin-top: 0.8mm; font-size: 9pt; color: #333; }
+  .tl-meta strong { color: #000; }
+
+  .bullets { margin-top: 1.5mm; gap: 1mm; }
+  .bullets li { padding-left: 4mm; font-size: 9.5pt; color: #222; break-inside: avoid; }
+  .bullets li::before {
+    top: 0.55em;
+    left: 1mm;
+    width: 1.2mm;
+    height: 1.2mm;
+    background: #111;
+  }
+
+  /* ---------- Keahlian ---------- */
+  .skills-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 3mm 8mm; }
+  .skills-grid .card { break-inside: avoid; }
+
+  .card-title {
+    margin-bottom: 1.2mm;
+    font-size: 9pt;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: #000;
+  }
+
+  .chips { display: block; }
+  .chips li {
+    display: inline;
+    padding: 0;
+    border: 0;
+    background: none;
+    font-size: 9.5pt;
+    color: #222;
+  }
+  .chips li:hover { transform: none; }
+  .chips li + li::before { content: "·"; margin: 0 1.6mm; color: #9a9a9a; }
+
   .js .reveal { opacity: 1 !important; transform: none !important; }
-  a { text-decoration: none; }
+  a { color: #000; text-decoration: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
